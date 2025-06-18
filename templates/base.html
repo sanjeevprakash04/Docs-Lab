@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>web-docs</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/boxicons.min.css') }}">
+
+</head>
+<body>
+    <div class="navbar">
+        <!-- Left side: menu + name -->
+        <div class="navbar-left">
+            <span class="app-title">Docs Lab</span>
+        </div>
+    
+        <!-- Right side: notification + help -->
+        <div class="navbar-right">
+            {% if user %}
+                <div class="avatar" id="avatarBtn">{{ user[0].upper() }}</div>
+
+                <!-- Avatar Dropdown Menu (Hidden Initially) -->
+                <div id="avatarDropdown" class="avatar-dropdown">
+                    <div class="avatar-info">
+                        <div class="dropdown-avatar">{{ user[0].upper() }}</div>
+                        <div class="dropdown-username">{{ user }}</div>
+                    </div>
+                    <div class="avatar-links">
+                        {% if user != "superadmin" %}
+                        <div id="changePasswordBtn" class="avatar-link">Change Password</div>
+                        {% endif %}
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <!-- <button id="openLoginBtn">Login</button> -->
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section Bar -->
+    <div class="sectionbar">
+        {% for sec in section_list %}
+            {% set sec_upper = sec.upper() %}
+            <a href="{{ url_for('section', section_name=sec) }}" class="{% if section == sec %}active-section{% endif %}">
+                {{ sec_upper }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                {% if section %}
+                    {% for file in files %}
+                        {% set name = file.rsplit('_', 2)[0] %}
+                        <li class="{% if active_file == file %}active{% endif %}">
+                            <a href="{{ url_for('view_docx', section=section, filename=file) }}">{{ name }}</a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>        
+
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- 🔒 Change Password Modal -->
+    <div id="changePasswordModal" class="pass-modal">
+        <div class="pass-modal-content">
+            <span class="close" id="closePasswordModal">&times;</span>
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="oldPassword">Old Password</label>
+                    <input type="password" id="oldPassword" name="oldPassword" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="off" required>
+                </div>
+                <button type="submit" class="login-btn">Change Password</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <form id="loginForm" method="POST">
+                <h2>Welcome</h2>
+                <p>Please login to continue</p>
+        
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" autocomplete="off" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="off" required>
+                </div>
+        
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-image-modal" onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
+        <div class="image-modal-center">
+            <img class="modal-image-content" id="modalImage">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+
+            document.querySelectorAll('.clickable-image').forEach(img => {
+                img.addEventListener('click', () => {
+                modal.style.display = "block";
+                modalImg.src = img.src;
+                });
+            });
+
+            document.querySelector(".close-image-modal").addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatarBtn = document.getElementById('avatarBtn');
+            const avatarDropdown = document.getElementById('avatarDropdown');
+        
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent clicking outside
+                avatarDropdown.style.display = avatarDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        
+            // Close dropdown if clicking outside
+            document.addEventListener('click', () => {
+                avatarDropdown.style.display = 'none';
+            });
+        
+            avatarDropdown.addEventListener('click', (e) => {
+                e.stopPropagation(); // Allow clicking inside dropdown without closing
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const modal = document.getElementById("changePasswordModal");
+            const closeBtn = document.getElementById("closePasswordModal");
+            const openPassBtn = document.getElementById("changePasswordBtn");
+            const passForm = document.getElementById("changePasswordForm");
+        
+            // If you have a button or sidebar link for "Change Password", trigger this
+            openPassBtn && openPassBtn.addEventListener("click", () => {
+                modal.style.display = "block";
+            });
+        
+            closeBtn && closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+        
+            window.addEventListener("click", (e) => {
+                if (e.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+        
+            passForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const oldPassword = document.getElementById("oldPassword").value.trim();
+                const newPassword = document.getElementById("newPassword").value.trim();
+                const confirmPassword = document.getElementById("confirmPassword").value.trim();
+        
+                if (newPassword !== confirmPassword) {
+                    alert("New passwords do not match!");
+                    return;
+                }
+
+                if (oldPassword === newPassword) {
+                    alert("New password and Old password should not be same!");
+                    return;
+                }
+        
+                fetch('/change_password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ oldPassword, newPassword })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Password changed successfully!");
+                        modal.style.display = "none";
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    alert("Failed to change password");
+                });
+            });
+        });
+    </script>        
+  
+    <script>
+        const modal = document.getElementById("loginModal");
+        const openBtn = document.getElementById("openLoginBtn");
+        const closeBtn = document.getElementById("closeModal");
+        const loginForm = document.getElementById("loginForm");
+        
+        openBtn && openBtn.addEventListener("click", () => {
+            modal.style.display = "block";
+        });
+        
+        closeBtn && closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+        
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+        
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // prevent normal form submit
+        
+            const formData = new FormData(loginForm);
+        
+            fetch('/login', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Login successful
+                    modal.style.display = "none";
+                    window.location.href = '/home'; // Redirect to home page
+                } else {
+                    // Login failed
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

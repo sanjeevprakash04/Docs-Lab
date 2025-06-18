@@ -1,0 +1,555 @@
+/* Root font size (1rem = 16px by default, but can be adjusted) */
+/* Ensure elements are sized properly, including padding and border */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 6vh;
+    width: 100%;
+    /* background-color: #b2defe; */
+    color: #005da2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 1000;
+    font-size: 1.1rem;
+    overflow: visible; /* Prevent overflow of navbar */
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+/* Left side (Title) */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+/* Title styling */
+.app-title {
+    font-size: 1.5rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Right side (Icons) */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: auto; /* Push to the right */
+    justify-content: flex-end; /* Ensure icons align to the right */
+    position: relative;
+}
+
+.navbar-right button {
+    width: 10vh;
+    height: 4vh;
+    border-radius: 0.3rem;
+    background-color: #005da2;
+    color: white;
+    font-weight: 600;
+    font-size: medium;
+    cursor: pointer;
+    border-color: none;
+    border: none;
+}
+
+.navbar-right button:hover {
+    background-color: #004d89;
+}
+
+.navbar-right .avatar {
+    width: 2rem;
+    height: 2rem;
+    background-color: #005da2;
+    color: white;
+    font-size: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.avatar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background-color: #ffffff;
+    color: #333;
+    min-width: 14rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.3);
+    overflow: hidden;
+    z-index: 1500;
+    transition: all 0.3s ease;
+}
+
+/* Top profile info */
+.avatar-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 0.2rem;
+}
+
+.dropdown-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #005da2;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-username {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+}
+
+.avatar-links {
+    margin-bottom: 0.2rem;
+}
+
+/* Links section */
+.avatar-links .avatar-link {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.avatar-links .avatar-link:hover {
+    background-color: #f1f1f1;
+}
+
+.avatar-links a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.avatar-links a:hover {
+    background-color: #f1f1f1;
+}
+
+.sectionbar {
+    height: 4vh;
+    width: 100%;
+    background-color: #005da2;
+    display: flex;
+    align-items: stretch;
+    padding-left: 0.2rem;
+    padding-right: 0.4rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 6vh; /* right below navbar */
+    left: 0;
+    z-index: 999;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.sectionbar a {
+    text-decoration: none;
+    color: white;
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    height: 100%;               /* Make it fill the .sectionbar height */
+    transition: background-color 0.2s ease;
+    font-size: 0.85rem;
+}
+
+.sectionbar a:hover {
+    background-color: #004d89;
+}
+
+/* Highlight active section in section bar */
+.sectionbar a.active-section {
+    background-color: #003d6b;
+    color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 10.1vh; /* Below navbar */
+    left: 0;
+    width: 13vw; /* Keep the sidebar width responsive */
+    height: 90vh;
+    padding-top: 0.1rem;
+    z-index: 999;
+    overflow-y: auto;
+    box-shadow: 2px 0 0 rgba(170, 170, 170, 0.3);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    position: relative;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+    color: black;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    width: 100%;                    /* Ensure full width */
+    height: 100%;                   /* Optional: full height */
+}
+
+.sidebar ul li:hover {
+    background-color: #f9f9f9;
+}
+
+.sidebar ul li.active {
+    background-color: #f1f1f1;
+}
+
+/* Layout wrapper */
+.container {
+    display: flex;
+    flex-direction: row;
+    padding-top: 10.1vh; /* Height of navbar */
+    height: 100vh;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 13vw; /* Reserve space for sidebar */
+    margin-right: 18vw;
+    padding-top: 0.2rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    flex: 1;
+    overflow-y: auto;
+    height: 89.9vh; /* Full screen minus navbar height */
+    font-size: 1rem;
+}
+
+.pass-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease-in;
+}
+
+.pass-modal-content {
+    background: #fff;
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 360px;
+    max-width: 95%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    animation: slideUp 0.3s ease-in;
+}
+
+.pass-modal-content h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-in;
+}
+  
+/* Modal Box */
+.modal-content {
+    background: #fff;
+    /* color: #fff; */
+    margin: 10% auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    width: 360px;
+    max-width: 95%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.3s ease-in;
+    position: relative;
+}
+
+/* Heading */
+.modal-content h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.modal-content p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    /* color: #bbb; */
+}
+
+/* Form Fields */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    padding-left: 0.2rem;
+    /* color: #ddd; */
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.65rem;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #fff;
+    /* color: #fff; */
+    font-size: 1rem;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    padding: 0.7rem;
+    background: #005da2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #004d89;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.docviewer-wrapper {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.doc-main-content {
+    flex: 1;
+    padding: 0 2rem;
+}
+
+.doc-toc-sidebar {
+    position: fixed;
+    top: 10.1vh; /* Same as left sidebar */
+    right: 0;
+    width: 18vw; /* Match left sidebar */
+    height: 90vh;
+    padding-left: 0.7rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    z-index: 999;
+    overflow-y: auto;
+    box-shadow: -2px 0 0 rgba(170, 170, 170, 0.3);
+    background-color: white;
+}
+
+.doc-toc-sidebar h4 {
+    margin-top: 0;
+    position: sticky;
+    top: 0; /* 👈 required: stick to the top of sidebar */
+    background-color: white; /* 👈 required: prevent overlapping content under it */
+    color: #005da2;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ccc;
+    padding: 0.7rem 0;
+}
+
+.doc-toc-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.doc-toc-sidebar ul li {
+    padding-bottom: 1rem;
+}
+
+.doc-toc-sidebar ul li a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding-right: 1rem;
+    padding-left: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.doc-toc-sidebar ul li a:hover {
+    color: #004d89;
+    font-weight: 500;
+}
+
+.dashboard-content {
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    min-height: 88vh;
+}
+
+.dashboard-content h1 {
+    color: #005da2;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+}
+
+.dashboard-content h2 {
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding-left: 4rem;
+}
+
+.dashboard-content h3 {
+    color: black;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-left: 4rem;
+}
+
+h1[id], h2[id], h3[id] {
+    scroll-margin-top: 1rem;
+}
+
+.dashboard-content p {
+    line-height: 1.6;
+    font-size: 1rem;
+    color: black;
+    font-weight: 500;
+    padding-left: 4rem;
+}
+
+.doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0 1.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.doc-version {
+    float: left;
+}
+
+.doc-date {
+    float: right;
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.image-modal-center {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-image-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.close-image-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  z-index: 10001;
+}
+
+html {
+    scroll-behavior: smooth;
+}
