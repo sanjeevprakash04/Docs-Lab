@@ -1,0 +1,25 @@
+# Ignore compiled files
+build/
+dist/
+documents/
+
+# Ignore database files
+*.sqlite3
+*.db
+*.sql
+
+# Ignore log files
+*.log
+*.txt
+*.spec
+
+# Ignore environment files
+.env
+venv/
+.envrc
+
+# Ignore Python files
+__pycache__/
+*.pyc
+*.pyo
+init_db.py
