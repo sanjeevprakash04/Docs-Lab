@@ -1,7 +1,9 @@
 # Ignore compiled files
 build/
 dist/
+
 documents/
+static/temp_images/
 
 # Ignore database files
 *.sqlite3
